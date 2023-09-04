@@ -1,0 +1,6 @@
+pokeworld/ — The home/index page.
+pokeworld/<objects>/ — The list of all pokemons or elements (e.g. /pokeworld/pokemons/, /pokeworld/elements/, etc.)
+pokeworld/<object>/<id> — The detail page for a specific pokemon or element with the given _id field value (e.g. /pokeworld/pokemon/584493c1f4887f06c0e67d37).
+pokeworld/<object>/create — The form to create a new pokemon or element (e.g. /pokeworld/element/create).
+pokeworld/<object>/<id>/update — The form to update a specific pokemon or element with the given _id field value (e.g. /pokeworld/pokemon/584493c1f4887f06c0e67d37/update).
+pokeworld/<object>/<id>/delete — The form to delete a specific pokemon or element with the given _id field value (e.g. /pokeworld/element/584493c1f4887f06c0e67d37/delete).
