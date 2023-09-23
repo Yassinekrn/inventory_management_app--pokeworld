@@ -4,14 +4,14 @@ const Schema = mongoose.Schema;
 
 const pokemonSchema = new Schema({
     name: { type: String, required: true },
-    size: { type: String, required: true, enum: ["Small", "Average", "Big", "Gigantic"],
+    size: { type: String, required: true, enum: ["Small", "Average", "Huge", "Gigantic"],
     default: "Average", }, 
     description: { type: String, required: true },
     attack: { type: Number, required: true },
     defense: { type: Number, required: true },
     health: { type: Number, required: true },
     element: [{ type: Schema.Types.ObjectId, ref: "Element" }],
-    avatar: { type: String },
+    avatar: { data: Buffer, contentType: String },
 });
 
 // Virtual for book's URL

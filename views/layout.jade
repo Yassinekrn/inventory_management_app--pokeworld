@@ -4,4 +4,14 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    nav(class="navbar") 
+      img(src='/images/pokeball.png', alt='pokeball' class="img_navbar")
+      ul(class="ul_navbar") 
+        li(class="li_navbar")
+          a(href="http://localhost:3000/pokeworld/" class="a_navbar") Home
+        li(class="li_navbar")
+          a(href="http://localhost:3000/pokeworld/pokemons" class="a_navbar") Pokemons
+        li(class="li_navbar")
+          a(href="http://localhost:3000/pokeworld/elements" class="a_navbar") Elements
+        
     block content

@@ -1,0 +1,34 @@
+extends layout
+
+block content
+    form(action="", method="POST", enctype="multipart/form-data") 
+        p name: 
+        input(type="text", name="name", value= (pokemon !== undefined) ? pokemon.name : "")
+        p size:
+        select(name="size")
+            option(value="Small", selected=(pokemon !== undefined && pokemon.size === 'Small') ? true : false) Small
+            option(value="Average", selected=(pokemon !== undefined && pokemon.size === 'Average') ? true : false) Average
+            option(value="Huge", selected=(pokemon !== undefined && pokemon.size === 'Huge') ? true : false) Huge
+            option(value="Gigantic", selected=(pokemon !== undefined && pokemon.size === 'Gigantic') ? true : false) Gigantic
+        p description:
+        input(type="text", name="description", value=(pokemon !== undefined) ? pokemon.description : "")
+        p attack:
+        input(type="number", name="attack", value=(pokemon !== undefined) ? pokemon.attack : "")
+        p defense:
+        input(type="number", name="defense", value=(pokemon !== undefined) ? pokemon.defense : "")
+        p health:
+        input(type="number", name="health", value=(pokemon !== undefined) ? pokemon.health : "")
+        p element:
+        each element in elements
+            label
+            input(type="checkbox", name="element", value=element._id, checked=(pokemon && pokemon.element.includes(element._id)) ? true : false)
+            | #{element.name}
+        p avatar:
+        input(type="file", name="image")
+        input(type="submit", value="Submit")
+
+    // Display errors here if there are any.
+    if errors
+        ul
+        each error in errors
+            li= error.msg

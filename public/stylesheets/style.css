@@ -3,6 +3,56 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+.navbar {
+  background-color: #333;
+  padding: 10px 0;
+  display: flex; /* Use flexbox for better alignment */
+  align-items: center; /* Center vertically within the navigation bar */
+}
+
+.ul_navbar {
+  list-style-type: none;
+  padding: 0;
+}
+
+.li_navbar {
+  display: inline;
+  margin-right: 20px;
+}
+
+.a_navbar {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+}
+
+.a_navbar:hover {
+  text-decoration: underline;
+}
+
+/* Style for the image */
+.img_navbar {
+  height: 40px; /* Adjust the height as needed */
+  margin-right: 10px; /* Add some spacing between the image and links */
+  border-radius: 50%; /* Rounded corners on the image (change to 0 for no rounded corners) */
+}
+
+.btn_primary {
+  background-color: rgb(85, 85, 221);
+  padding: 5px 20px;
+  border-radius: 4px;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn_primary a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.btn_primary:hover {
+  background-color: rgb(43, 43, 255);
+  box-shadow: 0px 3px 15px 1px rgba(0,0,0,0.8);
 }

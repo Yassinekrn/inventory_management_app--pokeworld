@@ -3,3 +3,10 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+
+  ul 
+    li Number of elements currently is #{element_count}
+    li Number of pokemons currently is #{pokemon_count}
+
+  button(class="btn_primary")
+    a(href="http://localhost:3000/pokeworld/pokemons") Explore

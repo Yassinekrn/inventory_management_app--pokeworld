@@ -6,11 +6,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const elementSchema = new Schema({
-    name: { name: String , required: true, maxLength: 100, minLength: 3 },
+    name: { type: String, required: true, maxLength: 100, minLength: 3 },
 });
 
 elementSchema.virtual("url").get(function () {
-    return `/elements/${this._id}`;
+    return `/pokeworld/elements/${this._id}`;
 });
 
 // Export function to create "SomeModel" model class

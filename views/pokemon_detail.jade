@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    h1 #{pokemon.name}
+    img(src=`data:${pokemon.avatar.contentType};base64,${pokemon.avatar.data.toString('base64')}`, alt=`${pokemon.name} image`)
+    p Size: #{pokemon.size}
+    p Description: #{pokemon.description}
+    p ATT: #{pokemon.attack}
+    p DEF: #{pokemon.defense}
+    p HP: #{pokemon.health}
+    p Elements: 
+    ul 
+        for element in pokemon.element
+            li #{element.name}
+        
