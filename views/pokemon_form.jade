@@ -21,7 +21,7 @@ block content
         p element:
         each element in elements
             label
-            input(type="checkbox", name="element", value=element._id, checked=(pokemon && pokemon.element.includes(element._id)) ? true : false)
+            input(type="checkbox", name="element", value=element._id, checked=pokemon && pokemon.element ? pokemon.element.some(pokemonElement => pokemonElement._id.toString() === element._id.toString()) : false )
             | #{element.name}
         p avatar:
         input(type="file", name="image")

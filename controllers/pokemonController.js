@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 exports.index = asyncHandler(async (req, res, next) => {
-  // Get details of pokemons and genre counts (in parallel)
+  // Get details of pokemons and element counts (in parallel)
   const [
   numPokemons,
   numElements,
@@ -59,8 +59,8 @@ exports.pokemon_list = asyncHandler(async (req, res, next) => {
     // Convert the element to an array.
     (req, res, next) => {
       if (!(req.body.element instanceof Array)) {
-          if (typeof req.body.element === "undefined") req.body.genre = [];
-          else req.body.genre = new Array(req.body.genre);
+          if (typeof req.body.element === "undefined") req.body.element = [];
+          else req.body.element = new Array(req.body.element);
       }
       next();
       },
@@ -109,12 +109,6 @@ exports.pokemon_list = asyncHandler(async (req, res, next) => {
           // Get all elements for form.
           const elements = await Element.find().exec();
   
-          /* // Mark our selected genres as checked.
-          for (const element of elements) {
-              if (pokemon.element.includes(element._id)) {
-              element.checked = "true"; 
-          }
-          }*/
           res.render("pokemon_form", {
               title: "Create Pokemon",
               elements: elements,
@@ -138,13 +132,101 @@ exports.pokemon_list = asyncHandler(async (req, res, next) => {
   exports.pokemon_delete_post = asyncHandler(async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Pokemon delete POST");
   });
-  
+  /* HERE BRO DONT GET LOST !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
   // Display pokemon update form on GET.
   exports.pokemon_update_get = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Pokemon update GET");
+    const elements = await Element.find().exec();
+    const pokemon = await Pokemon.findById(req.params.id).populate("element").exec();
+
+    if (pokemon === null) {
+      // No results.
+      const err = new Error("Pokemon not found");
+      err.status = 404;
+      return next(err);
+    }
+
+    // Success.
+    res.render("pokemon_form", {
+        title: "Create Pokemon",
+        elements: elements,
+        pokemon: pokemon,
+    });
   });
   
   // Handle pokemon update on POST.
-  exports.pokemon_update_post = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Pokemon update POST");
-  });
+  exports.pokemon_update_post = [
+    upload.single('image'),
+    // Convert the element to an array.
+    (req, res, next) => {
+      if (!(req.body.element instanceof Array)) {
+          if (typeof req.body.element === "undefined") req.body.element = [];
+          else req.body.element = new Array(req.body.element);
+      }
+      next();
+      },
+  
+      // Validate and sanitize fields.
+      body("name", "Name must not be empty.")
+          .trim()
+          .isLength({ min: 1 })
+          .escape(),
+      body("size", "Size must not be empty.")
+          .trim()
+          .isLength({ min: 1 })
+          .escape(),
+      body("description", "description must not be empty.")
+          .trim()
+          .isLength({ min: 1 })
+          .escape(),
+      body("attack", "attack must not be empty").isInt({ min: 1 }).escape(),
+      body("defense", "defense must not be empty").isInt({ min: 1 }).escape(),
+      body("health", "health must not be empty").isInt({ min: 1 }).escape(),
+      body("element.*").escape(),
+      // Process request after validation and sanitization.
+  
+      asyncHandler(async (req, res, next) => {
+        // Extract the validation errors from a request.
+          const errors = validationResult(req);
+  
+        // Create a Pokemon object with escaped and trimmed data.
+          const pokemon = new Pokemon({
+            _id: req.params.id,
+            name: req.body.name,
+            size: req.body.size,
+            description: req.body.description,
+            attack: req.body.attack,
+            defense: req.body.defense,
+            health: req.body.health,
+            element: req.body.element,
+          });
+
+        if (req.file) {
+          // If a new image was uploaded, update the avatar.
+          pokemon.avatar = {
+            data: fs.readFileSync(path.join(__dirname + '/../pokemon_images/' + req.file.filename)),
+            contentType: 'image/png',
+          };
+        }
+
+  
+          if (!errors.isEmpty()) {
+          // There are errors. Render form again with sanitized values/error messages.
+  
+          // Get all elements for form.
+          const elements = await Element.find().exec();
+  
+          res.render("pokemon_form", {
+              title: "Update Pokemon",
+              elements: elements,
+              pokemon: pokemon,
+              errors: errors.array(),
+          });
+          return;
+      } else {
+          // Data from form is valid. Update the Pokemon.
+        const updatedPokemon = await Pokemon.findByIdAndUpdate(req.params.id, pokemon, {});
+        // Redirect to Pokemon detail page.
+        res.redirect(updatedPokemon.url);
+      }
+      }),
+  ]
