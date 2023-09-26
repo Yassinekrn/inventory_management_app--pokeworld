@@ -5,6 +5,7 @@ const { body, validationResult } = require("express-validator");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const element = require("../models/element");
 
 //storage
 // Set up storage for uploaded files
@@ -125,12 +126,25 @@ exports.pokemon_list = asyncHandler(async (req, res, next) => {
   
   // Display pokemon delete form on GET.
   exports.pokemon_delete_get = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Pokemon delete GET");
+    const pokemon = await Pokemon.findById(req.params.id).populate("element").exec();
+    res.render("pokemon_delete", { title: "Delete Pokemon", pokemon })
   });
   
   // Handle pokemon delete on POST.
   exports.pokemon_delete_post = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Pokemon delete POST");
+    try {
+      // Delete the Pokémon document from the database
+      await Pokemon.findByIdAndRemove(req.params.id);
+  
+      // Redirect to the desired URL
+      const redirectUrl = `${req.protocol}://${req.get('host')}/pokeworld/pokemons`;
+      res.redirect(redirectUrl);
+    } catch (err) {
+      console.error('Error deleting Pokémon:', err);
+      // Handle any errors that occur during the deletion process
+      res.status(500).send('Internal Server Error');
+    }
+    
   });
   /* HERE BRO DONT GET LOST !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
   // Display pokemon update form on GET.

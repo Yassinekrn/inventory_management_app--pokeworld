@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    h1= title
+
+    form(action="", method="POST") 
+        p name: 
+        input(type="text", name="name", value= (element !== undefined) ? element.name : "")
+        input(type="submit", value="Submit")
+
+    // Display errors here if there are any.
+    if errors
+        ul
+        each error in errors
+            li= error.msg

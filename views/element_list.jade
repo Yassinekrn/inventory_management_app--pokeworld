@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  if element_list.length > 0
+    ul
+        each element in element_list
+            li
+                a(href=element.url) #{element.name}
+  else
+    li There are no elements.
