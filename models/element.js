@@ -10,7 +10,7 @@ const elementSchema = new Schema({
 });
 
 elementSchema.virtual("url").get(function () {
-    return `/pokeworld/elements/${this._id}`;
+    return `/pokeworld/element/${this._id}`;
 });
 
 // Export function to create "SomeModel" model class

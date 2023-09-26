@@ -64,16 +64,18 @@ exports.element_list = asyncHandler(async (req, res, next) => {
   // Display element delete form on GET.
   exports.element_delete_get = asyncHandler(async (req, res, next) => {
     const pokemon_list = await Pokemon.find({ element: req.params.id }, "name").exec();
-    res.render("element_delete", { title: "Delete Element", pokemon_list })
+    const element = await Element.findById(req.params.id).exec();
+    res.render("element_delete", { title: "Delete Element", pokemon_list, element })
   });
   
   // Handle element delete on POST.
   exports.element_delete_post = asyncHandler(async (req, res, next) => {
     const pokemon_list = await Pokemon.find({ element: req.params.id }, "name").exec();
+    const element = await Element.findById(req.params.id).exec();
     if (pokemon_list.length > 0) {
-      res.render("element_delete", { title: "Delete Element", pokemon_list });
+      res.render("element_delete", { title: "Delete Element", pokemon_list, element, errors: ["Element has associated pokemon. Delete pokemon first."] });
     } else {
-      await Element.findByIdAndDelete(req.body.elementid);
+      await Element.findByIdAndDelete(element._id);
       const redirectUrl = `${req.protocol}://${req.get('host')}/pokeworld/elements`;
       res.redirect(redirectUrl);
     }

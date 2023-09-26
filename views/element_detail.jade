@@ -3,9 +3,7 @@ extends layout
 block content
     h1 #{element.name}
 
-    br
     hr
-    br
 
     h2 Pokemons with this element:
     if pokemon_list.length > 0
@@ -17,8 +15,5 @@ block content
                     img(src=`data:${pokemon.avatar.contentType};base64,${pokemon.avatar.data.toString('base64')}`, alt=`${pokemon.name} image`)
                 li
                     p #{pokemon.description}
-                li
-                    each element in pokemon.element
-                        p #{element.name}
     else
         li There are no pokemons.

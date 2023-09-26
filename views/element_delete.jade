@@ -18,6 +18,11 @@ block content
 
     form(method='POST' action='')
         div
-        input#id(type='hidden',name='id', required='true', value=element._id )
+        input(type='hidden',name='id', required='true', value=element._id)
 
         button.btn.btn-primary(type='submit') Delete
+    
+    if errors
+        ul
+        for error in errors
+            li= error
