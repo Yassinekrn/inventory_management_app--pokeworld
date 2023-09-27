@@ -13,5 +13,8 @@ block content
         for element in pokemon.element
             li #{element.name}
     
-    button
-        a(href='/pokeworld/pokemon/' + pokemon._id + '/update') Update Pokemon
+    a(href="http://localhost:3000/pokeworld/pokemons") Back to pokemons list
+    br
+    a(href="http://localhost:3000/pokeworld/pokemon/#{pokemon._id}/delete/") Delete this pokemon
+    br
+    a(href="http://localhost:3000/pokeworld/pokemon/#{pokemon._id}/update/") Update this pokemon

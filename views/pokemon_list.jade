@@ -2,17 +2,23 @@
 extends layout
 
 block content
-  if pokemon_list.length > 0
-    ul
-        each pokemon in pokemon_list
-            li
-                a(href=pokemon.url) #{pokemon.name}
-            li
-                img(src=`data:${pokemon.avatar.contentType};base64,${pokemon.avatar.data.toString('base64')}`, alt=`${pokemon.name} image`)
-            li
-                p #{pokemon.description}
-            li
-                each element in pokemon.element
-                    p #{element.name}
-  else
-    li There are no pokemons.
+
+    form(action="", method="get") 
+        input(type="text", name="search", placeholder="Search...", value=( search_input !== undefined ? search_input : ""))
+        button(type="submit") Search
+
+
+    if pokemon_list.length > 0
+        ul
+            each pokemon in pokemon_list
+                li
+                    a(href=pokemon.url) #{pokemon.name}
+                li
+                    img(src=`data:${pokemon.avatar.contentType};base64,${pokemon.avatar.data.toString('base64')}`, alt=`${pokemon.name} image`)
+                li
+                    p #{pokemon.description}
+                li
+                    each element in pokemon.element
+                        p #{element.name}
+    else
+        li There are no pokemons.

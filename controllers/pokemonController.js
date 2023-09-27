@@ -38,8 +38,11 @@ exports.index = asyncHandler(async (req, res, next) => {
 
 // Display list of all pokemons.
 exports.pokemon_list = asyncHandler(async (req, res, next) => {
-  const pokemon_list = await Pokemon.find({}, 'name description element avatar').populate("element").exec();
-  res.render("pokemon_list", { title: "Pokemon List", pokemon_list });
+  let pokemon_list = await Pokemon.find({}, 'name description element avatar').populate("element").exec();
+  if (req.query.search)
+  pokemon_list = pokemon_list.filter(pokemon => pokemon.name.toLowerCase().includes(req.query.search.toLowerCase() || ""));
+    let search_input = req.query.search || "";
+  res.render("pokemon_list", { title: "Pokemon List", pokemon_list, search_input });
   });
   
   // Display detail page for a specific pokemon.
@@ -161,7 +164,7 @@ exports.pokemon_list = asyncHandler(async (req, res, next) => {
 
     // Success.
     res.render("pokemon_form", {
-        title: "Create Pokemon",
+        title: "Update Pokemon",
         elements: elements,
         pokemon: pokemon,
     });

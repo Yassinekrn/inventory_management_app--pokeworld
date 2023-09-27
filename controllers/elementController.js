@@ -5,8 +5,11 @@ const { body, validationResult } = require("express-validator");
 
 // Display list of all elements.
 exports.element_list = asyncHandler(async (req, res, next) => {
-    const element_list = await Element.find().exec();
-    res.render("element_list", { element_list });
+    let element_list = await Element.find().exec();
+    if (req.query.search)
+      element_list = element_list.filter(element => element.name.toLowerCase().includes(req.query.search.toLowerCase() || ""));
+    let search_input = req.query.search || "";
+    res.render("element_list", { element_list, search_input });
   });
   
   // Display detail page for a specific element.
